@@ -23,7 +23,7 @@ make -j8
 make install
 make distclean
 cd ~/ffmpeg_sources
-wget https://ffmpeg.org/releases/ffmpeg-4.2.1.tar.gz
+wget https://github.com/Silassiai/fdk-aac/raw/master/installation/ffmpeg-4.2.1.tar.gz
 tar xzvf ffmpeg-4.2.1.tar.gz
 cd ffmpeg-4.2.1
 PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig"
