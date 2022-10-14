@@ -1,12 +1,13 @@
-# Criando um script .sh para executar todos os comandos:
-#root@servidor:~# vi script.sh
-#root@servidor:~# chmod +x script.sh
-#root@servidor:~# ./script.sh
-
 apt-get update
-apt-get -y install autoconf automake build-essential git-core libass-dev libgpac-dev libsdl1.2-dev libtheora-dev libtool libvdpau-dev libvorbis-dev libx11-dev libxext-dev libxfixes-dev pkg-config texi2html zlib1g-dev libmp3lame-dev nasm gcc yasm wget && true
+apt-get -y install autoconf automake build-essential git-core libass-dev libgpac-dev libsdl1.2-dev libtheora-dev libtool libvdpau-dev libvorbis-dev libx11-dev libxext-dev libxfixes-dev pkg-config texi2html zlib1g-dev libmp3lame-dev nasm gcc yasm wget libx264 && true
 mkdir ~/ffmpeg_sources
-cd ~/ffmpeg_sources
+
+cd ~/ffmpeg_sources && \
+git -C x264 pull 2> /dev/null || git clone --depth 1 https://code.videolan.org/videolan/x264.git && \
+cd x264 && \
+PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static --enable-pic && \
+PATH="$HOME/bin:$PATH" make && \
+
 git clone --depth 1 https://github.com/Silassiai/fdk-aac.git
 cd fdk-aac
 autoreconf -fiv
@@ -31,7 +32,7 @@ export PKG_CONFIG_PATH
 ./configure --prefix="$HOME/ffmpeg_build" \
   --extra-cflags="-I$HOME/ffmpeg_build/include" --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
   --bindir="$HOME/bin" --extra-libs="-ldl" --enable-gpl --enable-libass --enable-libfdk-aac \
-  --enable-libmp3lame --enable-nonfree
+  --enable-libmp3lame --enable-nonfree --enable-libx264
 make -j8
 make install
 cp ffmpeg /usr/bin/
